@@ -1,0 +1,182 @@
+<style>
+:root {
+  --color-1: #e5e5e5;
+  --color-2: #dfdfdf;
+}
+
+html {
+  font-size: 1em;
+}
+
+p {
+  margin: 1em;
+}
+
+main {
+  flex-direction: column;
+}
+
+@media (min-width: 600px) {
+  html {
+    font-size: calc(0.9em + (1.1 - 0.9) * ((100vw - 21em)/(35 - 21)));
+  }
+
+  main {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1000px) {
+  html {
+    font-size: calc(1em);
+  }
+}
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gray-150 {
+  background: var(--color-1);
+  color: var(--color-1);
+}
+
+.gray-200 {
+  background: var(--color-2);
+  color: var(--color-2);
+}
+
+.swatch {
+  content: '';
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2px;
+  display: inline-flex;
+}
+
+.big.big {
+  background: none;
+  max-width: calc(400px - 12em);
+  min-height: 6rem;
+  display: none;
+  margin-bottom: 2rem;
+}
+
+.big.border {
+  border: solid 1px currentColor;
+}
+
+.big.text {
+  font-size: 2em;
+}
+
+.big.background {
+  background: currentColor;
+}
+
+.shadow {
+  box-shadow: 1.4px 2px 1px -1px rgba(22, 22, 22, 0.4);
+  border-radius: 4px;
+  border: solid 2px #876;
+}
+
+.title {
+  background: none;
+  filter: brightness(0);
+   display: inline-flex;
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  margin: 1rem;
+  font-size: 2em;
+  font-family: monospace;
+  position: relative;
+}
+
+.option .swatch {
+  z-index: -1;
+}
+
+input[type="radio"] {
+  position: absolute;
+  width: 1px;
+  visibility: hidden;
+}
+
+#gray-150:checked ~ .diffs .gray-150,
+#gray-200:checked ~ .diffs .gray-200 {
+  display: block;
+  transition: opacity 0s linear 0s;
+  opacity: 1;
+}
+
+.diffs {
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+label:active {
+  background: rgba(200, 200, 200, 0.2);
+  transform: scale(0.95);
+}
+</style>
+
+<body>
+  <p>Click a hex code to compare colors for border, text, and background</p>
+  <main>
+    <input type="radio" name="color" id="gray-150">
+    <label class="option" for="gray-150">
+      <div class="gray-150 swatch"></div>
+      <div class="gray-150 color-1-text title">#e5e5e5</div>
+    </label>
+
+    <input type="radio" name="color" id="gray-200" checked>
+    <label class="option" for="gray-200">
+      <div class="gray-200 swatch"></div>
+          <div class="gray-200 title color-2-text">#dfdfdf</div>
+    </label>
+
+    <div class="diffs">
+      <div class="gray-150 big border">Border</div>
+      <div class="gray-150 big text">Text color</div>
+      <div class="gray-150 big background">Background</div>
+
+      <div class="gray-200 big border">Border</div>
+      <div class="gray-200 big text">Text color</div>
+      <div class="gray-200 big background">Background</div>
+    </div>
+  </main>
+
+  <script>
+    let hash = location.hash.replace('#', '').split(',')
+    let color1 = '#' + (hash[0] || 'e4e7ed')
+    let color2 = '#' + (hash[1] || 'ececec')
+
+    let root = document.documentElement;
+
+    root.style.setProperty('--color-1', color1);
+    root.style.setProperty('--color-2', color2);
+
+    document.querySelector('.color-1-text').innerText = color1
+    document.querySelector('.color-2-text').innerText = color2
+  </script>
+</body>
+
